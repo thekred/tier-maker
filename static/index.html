@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tier Maker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="scene-glow scene-glow-a"></div>
+  <div class="scene-glow scene-glow-b"></div>
+
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="kicker">Local-first tier editor</p>
+        <h1>Tier Maker</h1>
+        <p class="hero-text">Перетаскивай карточки вверх, редактируй тиры через шестерёнку и сохраняй доску в JSON.</p>
+      </div>
+      <div class="hero-actions">
+        <button id="saveBtn" class="primary">Save</button>
+        <button id="exportBtn" class="ghost">Export</button>
+        <button id="importBtn" class="ghost">Import</button>
+        <input id="fileInput" type="file" accept=".tier,.json,application/json,application/zip" hidden>
+      </div>
+    </header>
+
+    <section class="workspace panel">
+      <div class="workspace-header">
+        <label class="title-field">
+          <span>Board title</span>
+          <input id="titleInput" type="text" placeholder="My Tier List">
+        </label>
+        <label class="title-field flex">
+          <span>Search game</span>
+          <div class="inline-field">
+            <input id="searchInput" type="text" placeholder="Type a game name, then search">
+            <button id="searchBtn" class="primary">Search</button>
+            <button id="addTierBtn" class="ghost">Add tier</button>
+          </div>
+          <label class="sort-field">
+            <span>Sort results</span>
+            <div id="searchSortCustom" class="custom-select" data-value="released-desc">
+              <button type="button" class="custom-select-toggle" aria-haspopup="listbox" aria-expanded="false">
+                <span class="custom-select-label">Release date (newest first)</span>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <ul role="listbox" class="custom-select-list" tabindex="-1">
+                <li role="option" data-value="released-desc">Release date (newest first)</li>
+                <li role="option" data-value="released-asc">Release date (oldest first)</li>
+                <li role="option" data-value="name-asc">Name (A → Z)</li>
+                <li role="option" data-value="name-desc">Name (Z → A)</li>
+                <li role="option" data-value="rating-desc">Rating (highest first)</li>
+                <li role="option" data-value="rating-asc">Rating (lowest first)</li>
+                <li role="option" data-value="metacritic-desc">Metacritic (highest first)</li>
+                <li role="option" data-value="metacritic-asc">Metacritic (lowest first)</li>
+                <li role="option" data-value="added-desc">Added to RAWG (newest first)</li>
+                <li role="option" data-value="added-asc">Added to RAWG (oldest first)</li>
+                <li role="option" data-value="created-desc">Created in RAWG (newest first)</li>
+                <li role="option" data-value="created-asc">Created in RAWG (oldest first)</li>
+                <li role="option" data-value="updated-desc">Updated (newest first)</li>
+                <li role="option" data-value="updated-asc">Updated (oldest first)</li>
+              </ul>
+            </div>
+          </label>
+          <div id="searchResults" class="search-results hidden" aria-live="polite"></div>
+        </label>
+        <div class="workspace-tools"></div>
+      </div>
+
+      <div class="board-surface">
+        <div class="board-frame">
+          <div class="board-frame-head">
+            <span>TIER LIST</span>
+            <span id="status" class="status-pill">Loading…</span>
+          </div>
+          <div id="tiersRoot" class="tiers-root"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="inventory panel">
+      <div class="panel-head">
+        <div>
+          <p class="section-label">Pin Images</p>
+          <h2>Card shelf</h2>
+        </div>
+        <p class="muted">Items not assigned to a tier live here. Drag them into the board.</p>
+      </div>
+      <div id="benchRoot" class="shelf"></div>
+    </section>
+
+    <section class="notes panel">
+      <div class="panel-head">
+        <div>
+          <p class="section-label">Notes</p>
+          <h2>Board notes</h2>
+        </div>
+      </div>
+      <textarea id="notesInput" rows="4" placeholder="Rules, links, or context for the board."></textarea>
+    </section>
+  </div>
+
+  <template id="itemTemplate">
+    <article class="item-card" draggable="true">
+      <div class="item-thumb-wrap">
+        <img class="item-thumb" alt="">
+      </div>
+      <div class="item-meta">
+        <span class="item-label"></span>
+      </div>
+      <button class="item-menu" data-action="rename" title="Edit item" aria-label="Edit item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06A2 2 0 014.27 16.9l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82L4.31 3.27A2 2 0 017.14.44l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V0a2 2 0 014 0v.09c.1.66.61 1.19 1.27 1.29.35.05.69.19.97.4l.06.05a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 00.33 1.82c.21.28.35.62.4.97.1.66.63 1.17 1.29 1.27H24a2 2 0 010 4h-.09c-.66.1-1.19.61-1.29 1.27-.05.35-.19.69-.4.97z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="item-remove" data-action="delete" title="Delete" aria-label="Delete">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 6h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M8 6v12a2 2 0 002 2h4a2 2 0 002-2V6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10 11v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M14 11v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </article>
+  </template>
+
+  <template id="tierTemplate">
+    <section class="tier-row">
+      <div class="tier-label">
+        <span class="tier-name"></span>
+      </div>
+      <div class="tier-drop"></div>
+      <div class="tier-controls">
+        <button data-action="tier-settings" title="Settings" aria-label="Tier settings">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06A2 2 0 014.27 16.9l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82L4.31 3.27A2 2 0 017.14.44l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V0a2 2 0 014 0v.09c.1.66.61 1.19 1.27 1.29.35.05.69.19.97.4l.06.05a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 00.33 1.82c.21.28.35.62.4.97.1.66.63 1.17 1.29 1.27H24a2 2 0 010 4h-.09c-.66.1-1.19.61-1.29 1.27-.05.35-.19.69-.4.97z" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button data-action="tier-up" title="Move up" aria-label="Move tier up">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 8l-6 6h12L12 8z" fill="currentColor"/>
+          </svg>
+        </button>
+        <button data-action="tier-down" title="Move down" aria-label="Move tier down">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 16l6-6H6l6 6z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+  </template>
+
+  <div id="tierModal" class="tier-modal hidden" aria-hidden="true">
+    <div class="tier-modal-backdrop" data-action="close-modal"></div>
+    <div class="tier-modal-card" role="dialog" aria-modal="true" aria-labelledby="tierModalTitle">
+      <div class="tier-modal-header">
+        <div>
+          <p class="section-label">Tier settings</p>
+          <h3 id="tierModalTitle">Edit tier</h3>
+        </div>
+        <button data-action="close-modal" class="ghost">×</button>
+      </div>
+
+      <div class="color-row" id="colorRow"></div>
+
+      <label class="modal-field">
+        <span>Label text</span>
+        <input id="tierLabelInput" type="text">
+      </label>
+
+      <div class="modal-actions">
+        <button id="addTierAboveBtn">Add row above</button>
+        <button id="addTierBelowBtn">Add row below</button>
+        <button id="clearTierBtn">Clear row images</button>
+        <button id="deleteTierBtn" class="danger">Delete row</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="itemModal" class="tier-modal hidden" aria-hidden="true">
+    <div class="tier-modal-backdrop" data-action="close-item-modal"></div>
+    <div class="tier-modal-card" role="dialog" aria-modal="true" aria-labelledby="itemModalTitle">
+      <div class="tier-modal-header">
+        <div>
+          <p class="section-label">Item settings</p>
+          <h3 id="itemModalTitle">Edit item</h3>
+        </div>
+        <button data-action="close-item-modal" class="ghost">×</button>
+      </div>
+
+      <div class="item-preview-row">
+        <img id="itemPreviewThumb" class="item-preview-thumb" alt="">
+        <div>
+          <p class="muted" id="itemPreviewMeta"></p>
+        </div>
+      </div>
+
+      <label class="modal-field">
+        <span>Item name</span>
+        <input id="itemLabelInput" type="text">
+      </label>
+
+      <div class="modal-field">
+        <span>Description</span>
+        <div id="itemDescription" class="item-description muted">No description cached yet.</div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="itemRemoveBtn" class="danger">Delete / Return to shelf</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="tier-modal hidden" aria-hidden="true">
+    <div class="tier-modal-backdrop" data-action="close-confirm-modal"></div>
+    <div class="tier-modal-card confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+      <div class="tier-modal-header">
+        <div>
+          <p class="section-label">Confirm action</p>
+          <h3 id="confirmModalTitle">Are you sure?</h3>
+        </div>
+        <button data-action="close-confirm-modal" class="ghost">×</button>
+      </div>
+      <p id="confirmMessage" class="confirm-message"></p>
+      <div class="confirm-actions">
+        <button id="confirmCancelBtn" class="ghost">Cancel</button>
+        <button id="confirmOkBtn" class="danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

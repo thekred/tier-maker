@@ -1,0 +1,77 @@
+{
+  "title": "My Tier List",
+  "notes": "",
+  "tiers": [
+    {
+      "id": "tier_c791895b",
+      "label": "Sщыщ",
+      "color": "#ef4444"
+    },
+    {
+      "id": "tier_551a99bd",
+      "label": "A",
+      "color": "#f97316"
+    },
+    {
+      "id": "tier_b10e0eff",
+      "label": "B",
+      "color": "#eab308"
+    },
+    {
+      "id": "tier_6d541c18",
+      "label": "C",
+      "color": "#22c55e"
+    },
+    {
+      "id": "tier_aec3727a",
+      "label": "D",
+      "color": "#3b82f6"
+    }
+  ],
+  "items": [
+    {
+      "id": "item_hwjyh6x2",
+      "label": "Dota 2",
+      "tier_id": "tier_c791895b",
+      "image_url": "/cache/games/10213/cover.jpg",
+      "rawg_id": 10213,
+      "rawg_slug": "dota-2",
+      "platforms": [
+        "Linux",
+        "macOS",
+        "PC"
+      ],
+      "released": "2013-07-09",
+      "rating": 3.07,
+      "metacritic": 90,
+      "description": "What used to be an unofficial modded map for the Warcraft 3, ended up being the most budgeted cybersport discipline, gathering millions of people to watch annual international championships. MOBA genre started with the DOTA, Defense of the Ancients, which can be efficiently described as 5 vs 5 top-down action strategy game, during which players are tasked to destroy the enemy core while protecting their own. Players can pick out of the roster of 112 heroes and battle on the single map while taking advantage of field vision, resources and item build that can either make heroes stronger or disable the enemy. DOTA 2 is still active, and receives updates weekly, reshaping metas and refreshing game balance, if by any chance some heroes became unreasonably strong. Each hero has not only a unique set of abilities but is fully customizable, through getting items for heroes after matches of through the trade. Not only heroes but terrain, couriers, that deliver items for you and even match announcers, that can be voiced by heroes, professional casters of just memorable characters from other forms of media.",
+      "genres": [
+        "Action",
+        "Massively Multiplayer"
+      ],
+      "cache_ready": true
+    },
+    {
+      "id": "item_grmcus7m",
+      "label": "Like a Dragon: Pirate Yakuza in Hawaii",
+      "tier_id": null,
+      "image_url": "/cache/games/989189/cover.jpg",
+      "rawg_id": 989189,
+      "rawg_slug": "like-a-dragon-pirate-yakuza-in-hawaii",
+      "platforms": [
+        "PC",
+        "Xbox Series S/X",
+        "PlayStation 5"
+      ],
+      "released": "2025-02-21",
+      "rating": 3.94,
+      "metacritic": null,
+      "description": "Édition numérique de luxeEmparez-vous du butin en choisissant l'édition numérique deluxe qui donne accès à des membres d'équipage légendaires, des pièces de bateau, des tenues emblématiques, une chanson de karaoké additionnelle, plus de musiques pour la playlist et plus encore ![CONTENU DE L'ÉDITION DELUXE]■ Jeu de base LIKE A DRAGON: PIRATE YAKUZA IN HAWAII■ PACK MEMBRE D'ÉQUIPAGE LÉGENDAIRE- Ensemble de pirates robustes- Ensemble de soutiens enthousiastes■ PACK TENUES LÉGENDAIRES- Ensemble de tenues spéciales légendaires- Ensemble de T-shirts spéciaux■ PACK PERSONNALISATION DE BATEAU- Ensemble de pièces navales Kazuma Kiryu- Ensemble de pièces navales Ichiban Kasuga- Ensemble de pièces navales Daigo Dojima- Ensemble de pièces navales RGG Studio■ PACK KARAOKÉ ET CD BONUS- Une chanson de karaoké supplémentaire- Ensemble de CD*Ce produit contient le jeu de base et du contenu additionnel. Veuillez noter que le contenu additionnel est également vendu séparément. À propos du jeuUne nouvelle épopée commence. Ses bottines en métal auront-elles le pied marin ? Incarnez Goro Majima, reconverti en pirate après avoir perdu la mémoire.Embarquez pour l'aventure rocambolesque d'un ex-yakuza devenu pirate des temps modernes en quête de ses souvenirs et d'un trésor légendaire aux côtés de son équipage. Préparez-vous à faire face à des combats endiablés à terre comme sur les flots.■ AVENTURE DE PIRATES YAKUZAS À L'HORIZON !Goro Majima, un ex-yakuza réputé, fait soudainement naufrage sur une île perdue du Pacifique. Incapable de se souvenir ne serait-ce que de son nom, il prend la mer en quête de son identité, accompagné de Noah, un jeune garçon qui lui a sauvé la vie. En quête d'un trésor légendaire, ils se retrouvent rapidement impliqués dans un conflit entre d'impitoyables criminels, des pirates des temps modernes et d'autres scélérats.■ TOUS DANS LE MÊME BATEAUAssemblez un équipage hétéroclite et améliorez votre navire en explorant le grand large. Entrez dans la légende en hissant la voile des amitiés les plus saugrenues, en terrassant vos adversaires à grands coups de canons et en vous emparant de trésors incroyables.Quand un bateau pirate ennemi vous aperçoit, faites parler la poudre dans un combat de navires intense en temps réel. Évitez les tirs ennemis en manœuvrant votre bateau et infligez des dégâts dévastateurs jusqu'à pouvoir aborder le bateau ennemi et terrasser leur capitaine dans un affrontement entre équipages. Régnez sur les flots, découvrez des îles perdues et mettez la main sur une ribambelle de butins comme un vrai pirate yakuza !■ DÉCHAÎNEZ-VOUS DANS DES COMBATS CRÉATIFS !Alternez de façon dynamique entre les styles « Loup de mer » et « Pirate » pour varier les attaques et asséner des combos, des prises et des éliminations aériennes récompensant votre créativité par de l'action spectaculaire.Terrassez vos adversaires avec rapidité, agilité et classe grâce au style « Loup de mer » et ses coups aussi précis que puissants capables de dompter vos ennemis. Ou laissez vos adversaires nourrir les poissons grâce au style « Pirate ». Maniez deux épées et servez-vous de tout un attirail de flibustier pour asséner mille millions de mille raclées.",
+      "genres": [
+        "Action",
+        "RPG"
+      ],
+      "cache_ready": true
+    }
+  ]
+}
